@@ -125,26 +125,26 @@ void Ex01MCApplication::ConstructMaterials() {
   TGeoElement *elLi = new TGeoElement("Lithium", "Li", z = 3, a = 6.95);
   TGeoElement *elF = new TGeoElement("Fluorum", "F", z = 9, a = 18.998403163);
 
-  TGeoIsotope* isot7Li = new TGeoIsotope("7Li", 3, 7, 7.016003434);
+  TGeoIsotope *isot7Li = new TGeoIsotope("7Li", 3, 7, 7.016003434);
   TGeoElement *el7Li = new TGeoElement("Lithium7", "7Li", 1);
   el7Li->AddIsotope(isot7Li, 1.);
-  
-  TGeoIsotope* isot6Li = new TGeoIsotope("6Li", 3, 6, 6.0151228874);
+
+  TGeoIsotope *isot6Li = new TGeoIsotope("6Li", 3, 6, 6.0151228874);
   TGeoElement *el6Li = new TGeoElement("Lithium6", "6Li", 1);
   el6Li->AddIsotope(isot6Li, 1.);
 
-  TGeoIsotope* isot2H = new TGeoIsotope("2H", 1, 2, 2.0141017778);
+  TGeoIsotope *isot2H = new TGeoIsotope("2H", 1, 2, 2.0141017778);
   TGeoElement *el2H = new TGeoElement("Deuterium", "2H", 1);
   el2H->AddIsotope(isot2H, 1.);
 
-  TGeoIsotope* isot106Cd = new TGeoIsotope("106Cd", 48, 106, 105.906459);
-  TGeoIsotope* isot108Cd = new TGeoIsotope("108Cd", 48, 108, 107.904184);
-  TGeoIsotope* isot110Cd = new TGeoIsotope("110Cd", 48, 110, 109.9030021);
-  TGeoIsotope* isot111Cd = new TGeoIsotope("111Cd", 48, 111, 110.9041781);
-  TGeoIsotope* isot112Cd = new TGeoIsotope("112Cd", 48, 112, 111.9027578);
-  TGeoIsotope* isot113Cd = new TGeoIsotope("113Cd", 48, 113, 112.9044017);
-  TGeoIsotope* isot114Cd = new TGeoIsotope("114Cd", 48, 114, 113.9033585);
-  TGeoIsotope* isot116Cd = new TGeoIsotope("116Cd", 48, 116, 115.904756);
+  TGeoIsotope *isot106Cd = new TGeoIsotope("106Cd", 48, 106, 105.906459);
+  TGeoIsotope *isot108Cd = new TGeoIsotope("108Cd", 48, 108, 107.904184);
+  TGeoIsotope *isot110Cd = new TGeoIsotope("110Cd", 48, 110, 109.9030021);
+  TGeoIsotope *isot111Cd = new TGeoIsotope("111Cd", 48, 111, 110.9041781);
+  TGeoIsotope *isot112Cd = new TGeoIsotope("112Cd", 48, 112, 111.9027578);
+  TGeoIsotope *isot113Cd = new TGeoIsotope("113Cd", 48, 113, 112.9044017);
+  TGeoIsotope *isot114Cd = new TGeoIsotope("114Cd", 48, 114, 113.9033585);
+  TGeoIsotope *isot116Cd = new TGeoIsotope("116Cd", 48, 116, 115.904756);
 
   TGeoElement *elCd = new TGeoElement("Cadmium", "natCd", 8);
   elCd->AddIsotope(isot106Cd, 0.0125);
@@ -156,7 +156,6 @@ void Ex01MCApplication::ConstructMaterials() {
   elCd->AddIsotope(isot114Cd, 0.2873);
   elCd->AddIsotope(isot116Cd, 0.0749);
 
-  
   //____Ar____
   a = 39.95;
   z = 18.;
@@ -172,14 +171,13 @@ void Ex01MCApplication::ConstructMaterials() {
   TGeoMixture *matPoly = new TGeoMixture("CH2", 2, density = 0.95);
   matPoly->AddElement(elC, 0.8571);
   matPoly->AddElement(elH, 0.1429);
-  
+
   //____Water____
   TGeoMixture *matWater = new TGeoMixture("Water", 2, density = 1.0);
   matWater->AddElement(elO, int(1));
   matWater->AddElement(elH, int(2));
   matWater->SetState(TGeoMaterial::kMatStateLiquid);
-  
-    
+
   //____Heavy water____
   TGeoMixture *matD2O = new TGeoMixture("D2O", 2, density = 1.1042);
   matD2O->AddElement(elO, int(1));
@@ -195,12 +193,12 @@ void Ex01MCApplication::ConstructMaterials() {
   TGeoMixture *matBe2C = new TGeoMixture("Be2C", 2, density = 2.24);
   matBe2C->AddElement(elBe, int(2));
   matBe2C->AddElement(elC, int(1));
-  
+
   //____7Li2O______
   TGeoMixture *mat7Li2O = new TGeoMixture("7Li2O", 2, density = 2.019725693);
   mat7Li2O->AddElement(el7Li, int(2));
   mat7Li2O->AddElement(elO, int(1));
-  
+
   //____6Li2O______
   TGeoMixture *mat6Li2O = new TGeoMixture("6Li2O", 2, density = 1.885211828);
   mat6Li2O->AddElement(el6Li, int(2));
@@ -219,7 +217,7 @@ void Ex01MCApplication::ConstructMaterials() {
   //_____Cd______
   TGeoMixture *matCd = new TGeoMixture("Cd", 1, density = 8.65);
   matCd->AddElement(elCd, int(1));
-  
+
   //____Al____
   TGeoMaterial *matAl =
       new TGeoMaterial("Al", a = 26.98, z = 13., density = 2.7);
@@ -349,10 +347,10 @@ void Ex01MCApplication::ConstructMaterials() {
 
   fImedBeO = 20;
   new TGeoMedium("BeO", fImedBeO, matBeO, param);
-  
+
   fImed7Li2O = 21;
   new TGeoMedium("7Li2O", fImed7Li2O, mat7Li2O, param);
-  
+
   fImed6Li2O = 22;
   new TGeoMedium("6Li2O", fImed6Li2O, mat6Li2O, param);
 
@@ -368,7 +366,7 @@ void Ex01MCApplication::ConstructMaterials() {
   fImedLiF = 26;
   new TGeoMedium("7LiF", fImed7LiF, mat7LiF, param);
 
-  fImedLiF = 27;
+  fImedCd = 27;
   new TGeoMedium("Cd", fImedCd, matCd, param);
 
   fImedPolysteren = 28;
@@ -391,9 +389,11 @@ void Ex01MCApplication::ConstructVolumes() {
     iMedWorld = fImedVac;
   }
   if (iMedWorld != -1) {
-    std::cout << "World material " << fWorldMaterial << " is set correctly" << std::endl;
+    std::cout << "World material " << fWorldMaterial << " is set correctly"
+              << std::endl;
   } else {
-    std::cout << "World material " << fWorldMaterial <<	" is incorrect. Using air instead!" << std::endl;
+    std::cout << "World material " << fWorldMaterial
+              << " is incorrect. Using air instead!" << std::endl;
     iMedWorld = fImedAir;
   }
   double expHallSize = 1000.;
@@ -408,14 +408,17 @@ void Ex01MCApplication::ConstructVolumes() {
   gGeoManager->SetTopVolume(top);
 
   // target
-  gGeoManager->GetMedium(fImedTarget)->GetMaterial()->SetTemperature(fTargetTemperature);
+  gGeoManager->GetMedium(fImedTarget)
+      ->GetMaterial()
+      ->SetTemperature(fTargetTemperature);
   TGeoVolume *target;
-  if (!fIsSimulatingSphere)  {
-    target = gGeoManager->MakeTube("TARGET", gGeoManager->GetMedium(fImedTarget), 0.,
-                                   fTargetRadius, fTargetThickness / 2.);
+  if (!fIsSimulatingSphere) {
+    target =
+        gGeoManager->MakeTube("TARGET", gGeoManager->GetMedium(fImedTarget), 0.,
+                              fTargetRadius, fTargetThickness / 2.);
   } else {
-    target = gGeoManager->MakeSphere("TARGET", gGeoManager->GetMedium(fImedTarget), 0.,
-				     fTargetRadius);
+    target = gGeoManager->MakeSphere(
+        "TARGET", gGeoManager->GetMedium(fImedTarget), 0., fTargetRadius);
   }
   top->AddNode(target, 1, new TGeoTranslation(0., 0., 0.));
   // cooling
@@ -454,41 +457,50 @@ void Ex01MCApplication::ConstructVolumes() {
                 << " is incorrect. Using Air instead!" << std::endl;
       coolingMediumId = fImedAir;
     }
-    gGeoManager->GetMedium(coolingMediumId)->GetMaterial()->SetTemperature(fCoolingTemperature);
+    gGeoManager->GetMedium(coolingMediumId)
+        ->GetMaterial()
+        ->SetTemperature(fCoolingTemperature);
     TGeoVolume *cooling;
     if (!fIsSimulatingSphere) {
-      cooling = gGeoManager->MakeTube("COOLING",
-                                     gGeoManager->GetMedium(coolingMediumId),
-                                     0., fTargetRadius + fCoolingThickness,
-                                     fTargetThickness / 2. + fCoolingThickness);
+      cooling = gGeoManager->MakeTube(
+          "COOLING", gGeoManager->GetMedium(coolingMediumId), fTargetRadius,
+          fTargetRadius + fCoolingThickness,
+          fTargetThickness / 2. + fCoolingThickness);
     } else {
       cooling = gGeoManager->MakeSphere(
           "COOLING", gGeoManager->GetMedium(coolingMediumId), fTargetRadius,
           fTargetRadius + fCoolingThickness);
     }
-    // cooling->AddNode(target, 1, new TGeoTranslation(0., 0., 0.));
     top->AddNode(cooling, 1, new TGeoTranslation(0., 0., 0.));
+
     // forward "cork"
-    TGeoVolume *coolingCork =
-      gGeoManager->MakeTube("COOLING_CORK", gGeoManager->GetMedium(coolingMediumId),
-			    0., fTargetRadius, fCoolingThickness / 2.);
-    if (!fIsSimulatingSphere) { 
-      top->AddNode(coolingCork, 1, new TGeoTranslation(0., 0., (fTargetThickness + fCoolingThickness) / 2.));
+    TGeoVolume *coolingCork = gGeoManager->MakeTube(
+        "COOLING_CORK", gGeoManager->GetMedium(coolingMediumId), 0.,
+        fTargetRadius, fCoolingThickness / 2.);
+    if (!fIsSimulatingSphere) {
+      top->AddNode(coolingCork, 1,
+                   new TGeoTranslation(
+                       0., 0., (fTargetThickness + fCoolingThickness) / 2.));
     }
   } // if (fCoolingThickness > 0.) {...
-  
-  if (fSenseSphereRadius < TMath::Sqrt(TMath::Power(fTargetThickness / 2., 2) + TMath::Power(fTargetRadius, 2)) + fCoolingThickness) {
-    std::cout << "Sense sphere is smaller than target station! Exiting!" << std::endl;
-    std::cerr << "Sense sphere is smaller than target station! Exiting!" << std::endl;
+
+  if (fSenseSphereRadius < TMath::Sqrt(TMath::Power(fTargetThickness / 2., 2) +
+                                       TMath::Power(fTargetRadius, 2)) +
+                               fCoolingThickness) {
+    std::cout << "Sense sphere is smaller than target station! Exiting!"
+              << std::endl;
+    std::cerr << "Sense sphere is smaller than target station! Exiting!"
+              << std::endl;
     gROOT->ProcessLine(".q");
   }
-  TGeoVolume *sensSphere = gGeoManager->MakeSphere(
-						   "SENS_SPHERE", gGeoManager->GetMedium(iMedWorld), fSenseSphereRadius, fSenseSphereRadius + 0.01);
+  TGeoVolume *sensSphere =
+      gGeoManager->MakeSphere("SENS_SPHERE", gGeoManager->GetMedium(iMedWorld),
+                              fSenseSphereRadius, fSenseSphereRadius + 0.01);
   top->AddNode(sensSphere, 1, new TGeoTranslation(0., 0., 0.));
-  
+
   // close geometry
   gGeoManager->CloseGeometry();
-  
+
   // notify VMC about Root geometry
   gMC->SetRootGeometry();
 }
@@ -498,7 +510,7 @@ void Ex01MCApplication::ConstructVolumes() {
 //
 
 //_____________________________________________________________________________
-void Ex01MCApplication::InitMC(const char* setup) {
+void Ex01MCApplication::InitMC(const char *setup) {
   /// Initialize MC.
   /// The selection of the concrete MC is done in the macro.
   /// \param setup The name of the configuration macro
@@ -566,9 +578,10 @@ void Ex01MCApplication::InitMC(const char* setup) {
       "Neutron energy vs cos #Theta (weight = E); E (MeV); cos #Theta; counts",
       100, 0., 1000., 100, -1., 1.);
 
-  hNeutronLogEnVsTheta = new TH2F("hNeutronLogEnVsTheta",
-			       "Neutron energy vs #Theta; Log_{10}(E (MeV)); #Theta (degrees); counts",
-			       150, -10., 5., 72, 0., 180.);
+  hNeutronLogEnVsTheta = new TH2F(
+      "hNeutronLogEnVsTheta",
+      "Neutron energy vs #Theta; Log_{10}(E (MeV)); #Theta (degrees); counts",
+      150, -10., 5., 72, 0., 180.);
   hChargedAngular =
       new TH2F("hChargedAngular",
                "Charged angular distribution; cos #Theta; #varphi; counts", 100,
@@ -597,8 +610,9 @@ void Ex01MCApplication::InitMC(const char* setup) {
                "Photon energy vs cos #Theta; E (MeV); cos #Theta; counts", 100,
                0., 1000., 100, -1., 1.);
   hPhotonEnVsCosThZoomed =
-    new TH2F("hPhotonEnVsCosThZoomed", "Photon energy vs cos #Theta; E (MeV); cos #Theta; counts",
-	     100, 0., 10., 100, -1., 1.);
+      new TH2F("hPhotonEnVsCosThZoomed",
+               "Photon energy vs cos #Theta; E (MeV); cos #Theta; counts", 100,
+               0., 10., 100, -1., 1.);
   hPhotonEnVsCosThW = new TH2F("hPhotonEnVsCosThW",
                                "Photon energy vs cos #Theta (weight = E); "
                                "E (MeV); cos #Theta; counts",
@@ -717,7 +731,7 @@ void Ex01MCApplication::GeneratePrimaries() {
     vx = gRandom->Gaus(0., fBeamSize);
     vy = gRandom->Gaus(0., fBeamSize);
   }
-  Double_t vz = - (fTargetThickness / 2. + fCoolingThickness);
+  Double_t vz = -(fTargetThickness / 2. + fCoolingThickness);
   if (fIsSimulatingSphere) {
     vz = 0.;
   }
@@ -804,7 +818,8 @@ void Ex01MCApplication::Stepping() {
       hNeutronEnVsCosThW->Fill(eKin, position.CosTheta(), eKin);
       hNeutronLogEnVsCosThW->Fill(TMath::Log10(eKin), position.CosTheta(),
                                   eKin);
-      hNeutronLogEnVsTheta->Fill(TMath::Log10(eKin), 180. * position.Theta() / TMath::Pi());
+      hNeutronLogEnVsTheta->Fill(TMath::Log10(eKin),
+                                 180. * position.Theta() / TMath::Pi());
     }
     if (gMC->TrackCharge() != 0.) { // charged particles
       hChargedAngular->Fill(position.CosTheta(), position.Phi());
@@ -824,7 +839,6 @@ void Ex01MCApplication::Stepping() {
       hPhotonEnergy->Fill(eKin);
       hPhotonEnergyW->Fill(eKin, eKin);
       if (eKin > 5.) {
-	
       }
     }
   } /// Print track position, the current volume and current medium names.

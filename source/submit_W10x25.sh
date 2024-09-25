@@ -1,13 +1,13 @@
 #!/bin/bash
 #SBATCH --array=0-9
-#%SBATCH --hint=nomultithread
+#SBATCH --hint=nomultithread
 #SBATCH --cpus-per-task=1
 #SBATCH --ntasks=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem-per-cpu=1000
-#SBATCH -o /home/evdokimov/hyperon/neutronMCStudy/simulations/W10x25_Be2C30x45-%A_%a.out
+#SBATCH -o /home/evdokimov/hyperon/neutronMCStudy/simulations/W10x25-%A_%a.out
 
-job_name=W10x25_Be2C30x45
+job_name=W10x25
 NEVENTS=10000
 phys_list=ShieldingLEND
 #phys_list=QGSP_BERT_HP

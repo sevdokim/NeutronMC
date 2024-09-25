@@ -36,13 +36,12 @@ void run_g4(int nEvents = 100000, int seed = 0,
   appl->SetTargetThickness(25.0 /*cm*/);
   appl->SetTargetRadius(5.0 /*cm*/);
   appl->SetTargetMaterial(18); // Wolfram medium id
-  appl->SetCoolingThickness(10. /*cm*/);
+  appl->SetCoolingThickness(0. /*cm*/);
   // appl->SetCoolingMaterial("Carbon");
   // appl->SetCoolingMaterial("Water");
   // appl->SetCoolingMaterial("Polyethylene");
-  // appl->SetCoolingMaterial("BeO");
-  appl->SetCoolingMaterial("Be2C");
-
+  // appl->SetCoolingMaterial("6Li2O");
+  
   // Initialize MC
   appl->InitMC(configMacro);
   // appl->SetCollectTracks(true);
