@@ -5,3 +5,4 @@ histos.root
 histos.pdf
 *original.pdf
 *_v*.pdf
+run_g4.C

@@ -110,20 +110,29 @@ void Ex01MCApplication::ConstructMaterials() {
   int n;            // Nucleons number
   Double_t density; // Material density in g/cm3
 
-  TGeoElement *elN = new TGeoElement("Nitrogen", "N", z = 7, a = 14.01);
-  TGeoElement *elO = new TGeoElement("Oxygen", "O", z = 8, a = 16.00);
-  TGeoElement *elH = new TGeoElement("Hydrogen", "H", z = 1, a = 1.01);
-  TGeoElement *elC = new TGeoElement("Carbon", "C", z = 6, a = 12.01);
-  TGeoElement *elNa = new TGeoElement("Sodium", "Na", z = 11, a = 22.99);
-  TGeoElement *elI = new TGeoElement("Iodine", "I", z = 53, a = 126.90447);
-  TGeoElement *elBi = new TGeoElement("Bismut", "Bi", z = 83, a = 208.98);
-  TGeoElement *elGe = new TGeoElement("Germanium", "Ge", z = 32, a = 72.63);
-  TGeoElement *elCu = new TGeoElement("Cuprum", "Cu", z = 29, a = 63.546);
-  TGeoElement *elSn = new TGeoElement("Stanum", "Sn", z = 50, a = 118.71);
-  TGeoElement *elW = new TGeoElement("Wolfram", "W", z = 74, a = 183.84);
-  TGeoElement *elBe = new TGeoElement("Beryllium", "Be", z = 4, a = 9.012182);
-  TGeoElement *elLi = new TGeoElement("Lithium", "Li", z = 3, a = 6.95);
-  TGeoElement *elF = new TGeoElement("Fluorum", "F", z = 9, a = 18.998403163);
+  TGeoElement *elN = new TGeoElement("Nitrogen", "N", z = 7, n = 14, a = 14.01);
+  TGeoElement *elO = new TGeoElement("Oxygen", "O", z = 8, n = 16, a = 16.00);
+  TGeoElement *elH = new TGeoElement("Hydrogen", "H", z = 1, n = 1, a = 1.01);
+  TGeoElement *elC = new TGeoElement("Carbon", "C", z = 6, n = 12, a = 12.01);
+  TGeoElement *elNa =
+      new TGeoElement("Sodium", "Na", z = 11, n = 23, a = 22.99);
+  TGeoElement *elI =
+      new TGeoElement("Iodine", "I", z = 53, n = 127, a = 126.90447);
+  TGeoElement *elBi =
+      new TGeoElement("Bismut", "Bi", z = 83, n = 209, a = 208.98);
+  TGeoElement *elGe =
+      new TGeoElement("Germanium", "Ge", z = 32, n = 73, a = 72.63);
+  TGeoElement *elCu =
+      new TGeoElement("Cuprum", "Cu", z = 29, n = 64, a = 63.546);
+  TGeoElement *elSn =
+      new TGeoElement("Stanum", "Sn", z = 50, n = 119, a = 118.71);
+  TGeoElement *elW =
+      new TGeoElement("Wolfram", "W", z = 74, n = 184, a = 183.84);
+  TGeoElement *elBe =
+      new TGeoElement("Beryllium", "Be", z = 4, n = 9, a = 9.012182);
+  TGeoElement *elLi = new TGeoElement("Lithium", "Li", z = 3, n = 7, a = 6.95);
+  TGeoElement *elF =
+      new TGeoElement("Fluorum", "F", z = 9, n = 19, a = 18.998403163);
 
   TGeoIsotope *isot7Li = new TGeoIsotope("7Li", 3, 7, 7.016003434);
   TGeoElement *el7Li = new TGeoElement("Lithium7", "7Li", 1);
@@ -209,6 +218,11 @@ void Ex01MCApplication::ConstructMaterials() {
   matLiF->AddElement(elLi, int(1));
   matLiF->AddElement(elF, int(1));
 
+  //____LiH______
+  TGeoMixture *matLiH = new TGeoMixture("LiH", 2, density = 0.82);
+  matLiH->AddElement(elLi, int(1));
+  matLiH->AddElement(elH, int(1));
+
   //____7LiF______
   TGeoMixture *mat7LiF = new TGeoMixture("7LiF", 2, density = 2.630);
   mat7LiF->AddElement(el7Li, int(1));
@@ -239,6 +253,10 @@ void Ex01MCApplication::ConstructMaterials() {
   //____Wolfram____
   TGeoMaterial *matWolfram =
       new TGeoMaterial("W", a = 183.84, z = 74., density = 19.25);
+
+  //____Densed Hydrogen____
+  TGeoMaterial *matDensedH =
+      new TGeoMaterial("DensedH", a = 1.01, z = 1, density = 1.);
 
   //____Bronze_____
   TGeoMixture *matBronze = new TGeoMixture("Bronze", 2, density = 8.6);
@@ -371,6 +389,11 @@ void Ex01MCApplication::ConstructMaterials() {
 
   fImedPolysteren = 28;
   new TGeoMedium("Polysteren", fImedPolysteren, matPolysteren, param);
+
+  fImedLiH = 29;
+  new TGeoMedium("LiH", fImedLiH, matLiH, param);
+
+  new TGeoMedium("DensedH", 30, matDensedH, param);
 }
 //____________________________________________________________________________
 //_____________________________________________________________________________
@@ -408,17 +431,37 @@ void Ex01MCApplication::ConstructVolumes() {
   gGeoManager->SetTopVolume(top);
 
   // target
-  gGeoManager->GetMedium(fImedTarget)
-      ->GetMaterial()
-      ->SetTemperature(fTargetTemperature);
+  TGeoMedium *targetMedium = nullptr;
+  if (fTargetMaterial == "NOT_SET") {
+    // target medium by id
+    targetMedium = gGeoManager->GetMedium(fImedTarget);
+    if (!targetMedium) {
+      std::cerr << "Target material id " << fImedTarget
+                << " is incorrect. Stopping!" << std::endl;
+      Fatal("ConstructVolumes", "Target material is incorrect.");
+    }
+  } else {
+    targetMedium = gGeoManager->GetMedium(fTargetMaterial);
+    if (!targetMedium) {
+      std::cerr << "Target material name " << fTargetMaterial
+                << " is incorrect. Stopping!" << std::endl;
+      Fatal("ConstructVolumes", "Target material is incorrect.");
+    }
+  }
+  targetMedium->GetMaterial()->SetTemperature(fTargetTemperature);
   TGeoVolume *target;
   if (!fIsSimulatingSphere) {
-    target =
-        gGeoManager->MakeTube("TARGET", gGeoManager->GetMedium(fImedTarget), 0.,
-                              fTargetRadius, fTargetThickness / 2.);
+    target = gGeoManager->MakeTube("TARGET", targetMedium, 0., fTargetRadius,
+                                   fTargetThickness / 2.);
   } else {
-    target = gGeoManager->MakeSphere(
-        "TARGET", gGeoManager->GetMedium(fImedTarget), 0., fTargetRadius);
+    target = gGeoManager->MakeSphere("TARGET", targetMedium, 0., fTargetRadius);
+    // drill a hole in the sphere if needed
+    if (fTargetHoleRadius > 0.) {
+      TGeoVolume *targetHole = gGeoManager->MakeTube(
+          "TARGET_HOLE", gGeoManager->GetMedium(iMedWorld), 0.,
+          fTargetHoleRadius, fTargetRadius + 0.01);
+      target->AddNode(targetHole, 1, new TGeoTranslation(0., 0., 0.));
+    }
   }
   top->AddNode(target, 1, new TGeoTranslation(0., 0., 0.));
   // cooling
@@ -474,10 +517,10 @@ void Ex01MCApplication::ConstructVolumes() {
     top->AddNode(cooling, 1, new TGeoTranslation(0., 0., 0.));
 
     // forward "cork"
-    TGeoVolume *coolingCork = gGeoManager->MakeTube(
-        "COOLING_CORK", gGeoManager->GetMedium(coolingMediumId), 0.,
-        fTargetRadius, fCoolingThickness / 2.);
     if (!fIsSimulatingSphere) {
+      TGeoVolume *coolingCork = gGeoManager->MakeTube(
+          "COOLING_CORK", gGeoManager->GetMedium(coolingMediumId), 0.,
+          fTargetRadius, fCoolingThickness / 2.);
       top->AddNode(coolingCork, 1,
                    new TGeoTranslation(
                        0., 0., (fTargetThickness + fCoolingThickness) / 2.));
@@ -760,6 +803,7 @@ void Ex01MCApplication::BeginEvent() {
   /// User actions at beginning of event.
   fNNeutrons = 0;
   fDrawEvent = false;
+  fIsSuspiciousEvent = false;
   // std::cin.ignore();
   // Clear TGeo tracks (if filled)
   if (/*TString(gMC->GetName()) == "TGeant3TGeo" &&*/
@@ -838,7 +882,9 @@ void Ex01MCApplication::Stepping() {
       hPhotonEnVsCosThW->Fill(eKin, position.CosTheta(), eKin);
       hPhotonEnergy->Fill(eKin);
       hPhotonEnergyW->Fill(eKin, eKin);
-      if (eKin > 5.) {
+      if (eKin / 1000. > 10. * fInitialEnergy) {
+        fDrawEvent = true;
+        fIsSuspiciousEvent = true;
       }
     }
   } /// Print track position, the current volume and current medium names.
@@ -892,6 +938,11 @@ void Ex01MCApplication::FinishEvent() {
     gSystem->ProcessEvents();
     // gMC->StopRun();
     gSystem->Sleep(500);
+    if (fDebugSuspiciousEvent && fIsSuspiciousEvent) {
+      // gGeoManager->GetListOfTracks();
+      gMC->StopRun();
+      fStack->Print();
+    }
   }
   fStack->Reset();
 }

@@ -44,6 +44,7 @@ public:
   virtual TParticle *PopNextTrack(Int_t &itrack);
   virtual TParticle *PopPrimaryForTracking(Int_t i);
   void Reset();
+  void Print();
 
   // set methods
   virtual void SetCurrentTrack(Int_t itrack);

@@ -45,14 +45,16 @@ public:
   static Ex01MCApplication *Instance();
 
   // methods
-  void InitMC(const char* setup);
+  void InitMC(const char *setup);
   void RunMC(Int_t nofEvents);
   void FinishRun();
   void SetBeamSize(double size) { fBeamSize = size; }
   void SetTargetMaterial(int mat) { fImedTarget = mat; }
+  void SetTargetMaterial(const char *mat) { fTargetMaterial = mat; }
   void SetTargetRadius(double rad) { fTargetRadius = rad; }
   void SetTargetThickness(double thic) { fTargetThickness = thic; }
   void SetTargetTemperature(double temp) { fTargetTemperature = temp; }
+  void SetTargetHoleRadius(double rad) { fTargetHoleRadius = rad; }
   void SetCoolingThickness(double thic) { fCoolingThickness = thic; }
   void SetCoolingMaterial(const char *mat) { fCoolingMaterial = mat; }
   void SetCoolingTemperature(double temp) { fCoolingTemperature = temp; }
@@ -64,7 +66,8 @@ public:
   void SetCollectTracks(bool collectTracks);
   void DrawEachEvent(bool draw) { fDrawEachEvent = draw; }
   void SetSimulatingSphere() { fIsSimulatingSphere = true; }
-  
+  void SetDebugSuspiciousEvent() { fDebugSuspiciousEvent = true; }
+
   virtual TVirtualMCApplication *CloneForWorker() const;
   virtual void InitOnWorker();
   virtual void ConstructGeometry();
@@ -116,17 +119,20 @@ private:
   int fImed7LiF;
   int fImedCd;
   int fImedPolysteren;
-  
+  int fImedLiH;
+
   bool fIsSimulatingSphere = false;
   int fPdg = 2212;
   int fSeed = 0;
   double fBeamSize = 0.;
   double fInitialEnergy = 1.3;
-  
-  int fImedTarget = 18;               // default = Wolfram
-  double fTargetTemperature = 273.15; // [K]
-  double fTargetRadius = 5.;          // default = 5 cm
-  double fTargetThickness = 25.;      // default = 25 cm
+
+  int fImedTarget = 18;                // default = Wolfram
+  double fTargetTemperature = 273.15;  // [K]
+  double fTargetRadius = 5.;           // default = 5 cm
+  double fTargetThickness = 25.;       // default = 25 cm
+  double fTargetHoleRadius = 0.;       // default = 0 cm (no hole)
+  TString fTargetMaterial = "NOT_SET"; // default
 
   double fCoolingThickness = 2.5;      // default = 2.5 cm
   double fCoolingTemperature = 273.15; // [K]
@@ -135,7 +141,7 @@ private:
   TString fWorldMaterial = "Air";
 
   double fSenseSphereRadius = 100.; // [cm]
-  
+
   int fNNeutrons;
   int fNEvents;
 
@@ -146,6 +152,8 @@ private:
   double fNeutronMass;
 
   Bool_t fOldGeometry; ///< Option for geometry definition
+  bool fDebugSuspiciousEvent = false;
+  bool fIsSuspiciousEvent = false;
   TFile *fFileSave;
   TH1F *hNeutronLogEnergy;
   TH1F *hNeutronLogEnergyW;
@@ -158,7 +166,7 @@ private:
   TH2F *hNeutronEnVsCosTh;
   TH2F *hNeutronEnVsCosThW;
   TH2F *hNeutronLogEnVsTheta;
-  
+
   TH2F *hChargedAngular;
   TH1F *hChargedEnergy;
   TH1F *hChargedEnergyW;

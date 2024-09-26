@@ -225,3 +225,13 @@ void Ex01MCStack::Reset() {
     fStack.pop();
   }
 }
+//_____________________________________________________________________________
+void Ex01MCStack::Print() {
+  /// Print all particles in stack
+
+  std::cout << "Particle stack has " << fParticles->GetEntriesFast()
+            << " particles:" << std::endl;
+  for (int i = 0; i < fParticles->GetEntriesFast(); i++) {
+    ((Ex01Particle *)(fParticles->At(i)))->Print();
+  }
+}

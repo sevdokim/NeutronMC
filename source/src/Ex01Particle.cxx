@@ -119,3 +119,11 @@ Ex01Particle *Ex01Particle::GetDaughter(Int_t i) const {
 
   return (Ex01Particle *)fDaughters->At(i);
 }
+//_____________________________________________________________________________
+void Ex01Particle::Print() {
+  // print info about particle
+  std::cout << "Id=" << std::setw(5) << fID << "; Mother=" << std::setw(5)
+            << fParticle->GetMother(0) << "; PDG=" << std::setw(10)
+            << fParticle->GetPdgCode() << "; ";
+  fParticle->Print();
+}

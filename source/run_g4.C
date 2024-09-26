@@ -11,7 +11,7 @@
 /// \file E01/run_g4.C
 /// \brief Macro for running Example01 with Geant4.
 
-void run_g4(int nEvents = 100000, int seed = 0,
+void run_g4(int nEvents = 1000, int seed = 0,
             const TString &configMacro = "g4tgeoConfig.C") {
   /// Macro function for running Example01 with Geant4 from
   /// Root interactive session.
@@ -28,28 +28,41 @@ void run_g4(int nEvents = 100000, int seed = 0,
   appl->SetSeed(seed);
 
   // beam particle
-  appl->SetPdg(2212); // proton
-  appl->SetInitialEnergy(1.3 /*GeV*/);
+  // appl->SetPdg(2212); // proton
+  appl->SetPdg(2112); // neutron
+  appl->SetInitialEnergy(0.005 /*GeV*/);
   appl->SetBeamSize(0. /*cm*/);
 
+  // special generator
+  appl->SetSimulatingSphere();
+
   // target parameters
-  appl->SetTargetThickness(25.0 /*cm*/);
-  appl->SetTargetRadius(5.0 /*cm*/);
-  appl->SetTargetMaterial(18); // Wolfram medium id
-  appl->SetCoolingThickness(10. /*cm*/);
+  // appl->SetTargetThickness(25.0 /*cm*/);
+  appl->SetTargetRadius(15.0 /*cm*/);
+  //  appl->SetTargetMaterial(2); // carbon
+  //  appl->SetWorldMaterial("Vacuum");
+  //  appl->SetTargetMaterial(7); // Polyethilen medium id
+  //  appl->SetTargetMaterial(19);          // water
+  //  appl->SetTargetMaterial(24);          // D2O
+  // appl->SetTargetMaterial("LiH");
+  appl->SetTargetMaterial("DensedH");
+  appl->SetTargetHoleRadius(2. /*cm*/); // radius of hole along z axis
+
+  appl->SetCoolingThickness(0. /*cm*/);
+  appl->SetCoolingMaterial("Cd");
   // appl->SetCoolingMaterial("Carbon");
   // appl->SetCoolingMaterial("Water");
   // appl->SetCoolingMaterial("Polyethylene");
-  // appl->SetCoolingMaterial("BeO");
-  appl->SetCoolingMaterial("Be2C");
+  // appl->SetCoolingMaterial("LiF");
+  appl->SetDebugSuspiciousEvent();
 
   // Initialize MC
   appl->InitMC(configMacro);
-  // appl->SetCollectTracks(true);
-  appl->SetCollectTracks(false);
+  appl->SetCollectTracks(true);
+  // appl->SetCollectTracks(false);
   // appl->DrawEachEvent(true);
   appl->DrawEachEvent(false);
-  //     Run MC
+  //      Run MC
   appl->RunMC(nEvents);
   // gGeoManager->GetTopVolume()->Draw();
   // gGeoManager->DrawTracks("/*");

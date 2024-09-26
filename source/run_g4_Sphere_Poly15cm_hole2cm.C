@@ -39,7 +39,8 @@ void run_g4(int nEvents = 100000, int seed = 0,
   // target parameters
   // appl->SetTargetThickness(25.0 /*cm*/);
   appl->SetTargetRadius(15.0 /*cm*/);
-  appl->SetTargetMaterial(7); // Polyethilen medium id
+  appl->SetTargetMaterial(7);           // Polyethilen medium id
+  appl->SetTargetHoleRadius(2. /*cm*/); // radius of hole along z axis
   appl->SetCoolingThickness(0. /*cm*/);
   appl->SetCoolingMaterial("Cd");
   // appl->SetCoolingMaterial("Carbon");

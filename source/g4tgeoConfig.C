@@ -21,10 +21,10 @@ void Config() {
   // RunConfiguration for Geant4
   TG4RunConfiguration
       *runConfiguration = // new TG4RunConfiguration("geomRoot");
-                          // new TG4RunConfiguration("geomRoot", "FTFP_BERT");
+    //                       new TG4RunConfiguration("geomRoot", "FTFP_BERT");
     //    new TG4RunConfiguration("geomRoot", "QGSP_BERT_HP");
-  // new TG4RunConfiguration("geomRoot", "Shielding");
-      new TG4RunConfiguration("geomRoot", "ShieldingLEND");
+     new TG4RunConfiguration("geomRoot", "Shielding");
+    // new TG4RunConfiguration("geomRoot", "ShieldingLEND");
   //  new TG4RunConfiguration("geomRoot", "FTFP_BERT_EMZ+optical");
   runConfiguration->SetMTApplication(0);
   // TGeant4

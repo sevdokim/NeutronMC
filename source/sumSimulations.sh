@@ -25,6 +25,7 @@ do
 	cd $wd
 	./addhisto.sh $sim_dir/$phys_list/$prod/histos.list $sim_dir/$phys_list/$prod/histos.root
 	cp $sim_dir/$phys_list/$prod/histos.root ${phys_list}_${prod}.root
+    root -b -q drawHistos.C\(\"${phys_list}_${prod}.root\"\)
 	cd -
     done
 done

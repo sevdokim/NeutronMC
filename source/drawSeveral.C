@@ -7,7 +7,7 @@ void drawSeveral() {
   // const char *histoName = "hNeutronCosTh";
   // const char *histoName = "hChargedEnergy";
   // const char *histoName = "hPhotonEnergy";
-  int nFiles = 3; // <------------------------------------------------------------------- NUMBER OF FILES
+  int nFiles = 4; // <------------------------------------------------------------------- NUMBER OF FILES
   /*const char *fileName[] = {"W10x35_H2O20x45.root", "W15x25_H2O25x35.root",
                             "W10x25_C16x31.root", "W10x25_H2O20x35.root",
                             "W10x25_H2C20x35.root"};*/
@@ -22,9 +22,13 @@ void drawSeveral() {
     "ShieldingLEND_W10x25_H2C20x35.root",
     "ShieldingLEND_W10x25_C60x75.root"}; */
   const char *fileName[] = {
-    "ShieldingLEND_W10x25_Be2C50x65.root",
-    "ShieldingLEND_W10x25_Be2C50x65_T500C.root",
-    "ShieldingLEND_W10x25_Be2C50x65_T1000C.root"};
+    // "ShieldingLEND_Sphere_Poly15cm_hole2cm.root",
+    "Shielding_Sphere_Poly15cm_hole2cm.root",
+    "Shielding_Sphere_D2O15cm_hole2cm.root",
+    "Shielding_Sphere_LiH15cm_hole2cm.root",
+    "Shielding_Sphere_LiH25cm_hole2cm.root"
+  };
+    //"QGSP_Sphere_Poly15cm_hole2cm.root"};
   
   const double xRangeLeft = 0., xRangeRight = -1.; // <----------------------------------- X-axis range
   // ------ if xRangeRight < xRangeLeft then range is not set -------
@@ -51,6 +55,7 @@ void drawSeveral() {
     histo[maxHistoId]->GetXaxis()->SetRangeUser(xRangeLeft, xRangeRight);
   }
   histo[maxHistoId]->Draw();
+  gPad->SetLogy(1);
   TLegend *leg = new TLegend(0.1, 0.7, 0.48, 0.9);
   leg->AddEntry(histo[maxHistoId], fileName[maxHistoId], "l");
   for (int i = 0; i < nFiles; i++) {
