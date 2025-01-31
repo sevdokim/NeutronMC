@@ -165,6 +165,10 @@ void Ex01MCApplication::ConstructMaterials() {
   elCd->AddIsotope(isot114Cd, 0.2873);
   elCd->AddIsotope(isot116Cd, 0.0749);
 
+  TGeoIsotope *isot232Th = new TGeoIsotope("232Th", 90, 232, 232.038055);
+  TGeoElement *el232Th = new TGeoElement("Thorium232", "232Th", 1);
+  el232Th->AddIsotope(isot232Th, 1.);
+  
   //____Ar____
   a = 39.95;
   z = 18.;
@@ -232,6 +236,10 @@ void Ex01MCApplication::ConstructMaterials() {
   TGeoMixture *matCd = new TGeoMixture("Cd", 1, density = 8.65);
   matCd->AddElement(elCd, int(1));
 
+  //_____Th______
+  TGeoMixture *mat232Th = new TGeoMixture("232Th", 1, density = 11.78);
+  mat232Th->AddElement(el232Th, int(1));
+  
   //____Al____
   TGeoMaterial *matAl =
       new TGeoMaterial("Al", a = 26.98, z = 13., density = 2.7);
@@ -294,6 +302,7 @@ void Ex01MCApplication::ConstructMaterials() {
   TGeoMaterial *matVac =
       new TGeoMaterial("Vacuum", a = 1., z = 1., density = 10e-10);
 
+  
   //
   // Tracking medias
   //
@@ -394,6 +403,8 @@ void Ex01MCApplication::ConstructMaterials() {
   new TGeoMedium("LiH", fImedLiH, matLiH, param);
 
   new TGeoMedium("DensedH", 30, matDensedH, param);
+
+  new TGeoMedium("232Thorium", 31, mat232Th, param);
 }
 //____________________________________________________________________________
 //_____________________________________________________________________________
