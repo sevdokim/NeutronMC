@@ -1,32 +1,15 @@
-//------------------------------------------------
-// The Virtual Monte Carlo examples
-// Copyright (C) 2007 - 2014 Ivana Hrivnacova
-// All rights reserved.
-//
-// For the licensing terms see geant4_vmc/LICENSE.
-// Contact: root-vmc@cern.ch
-//-------------------------------------------------
-
-/// \file Ex01MCStack.cxx
-/// \brief Implementation of the Ex01MCStack class
-///
-/// Geant4 ExampleN01 adapted to Virtual Monte Carlo
-///
-/// \date 05/04/2002
-/// \author I. Hrivnacova; IPN, Orsay
-
-#include "Ex01MCStack.h"
+#include "NeutronMCStack.h"
 
 #include <TError.h>
 #include <TObjArray.h>
 #include <TParticle.h>
 
 /// \cond CLASSIMP
-ClassImp(Ex01MCStack);
+ClassImp(NeutronMCStack);
 /// \endcond
 
 //_____________________________________________________________________________
-Ex01MCStack::Ex01MCStack(Int_t size)
+NeutronMCStack::NeutronMCStack(Int_t size)
     : fParticles(0), fCurrentTrack(-1), fNPrimary(0) {
   /// Standard constructor
   /// \param size  The stack size
@@ -35,12 +18,12 @@ Ex01MCStack::Ex01MCStack(Int_t size)
 }
 
 //_____________________________________________________________________________
-Ex01MCStack::Ex01MCStack() : fParticles(0), fCurrentTrack(-1), fNPrimary(0) {
+NeutronMCStack::NeutronMCStack() : fParticles(0), fCurrentTrack(-1), fNPrimary(0) {
   /// Default constructor
 }
 
 //_____________________________________________________________________________
-Ex01MCStack::~Ex01MCStack() {
+NeutronMCStack::~NeutronMCStack() {
   /// Destructor
 
   if (fParticles)
@@ -51,20 +34,20 @@ Ex01MCStack::~Ex01MCStack() {
 // private methods
 
 //_____________________________________________________________________________
-Ex01Particle *Ex01MCStack::GetParticle(Int_t id) const {
+NeutronMCParticle *NeutronMCStack::GetParticle(Int_t id) const {
   /// \return   The \em id -th particle in fParticles
   /// \param id The index of the particle to be returned
 
   if (id < 0 || id >= fParticles->GetEntriesFast())
     Fatal("GetParticle", "Index out of range");
 
-  return (Ex01Particle *)fParticles->At(id);
+  return (NeutronMCParticle *)fParticles->At(id);
 }
 
 // public methods
 
 //_____________________________________________________________________________
-void Ex01MCStack::PushTrack(Int_t toBeDone, Int_t parent, Int_t pdg,
+void NeutronMCStack::PushTrack(Int_t toBeDone, Int_t parent, Int_t pdg,
                             Double_t px, Double_t py, Double_t pz, Double_t e,
                             Double_t vx, Double_t vy, Double_t vz, Double_t tof,
                             Double_t polx, Double_t poly, Double_t polz,
@@ -103,13 +86,13 @@ void Ex01MCStack::PushTrack(Int_t toBeDone, Int_t parent, Int_t pdg,
   particleDef->SetWeight(weight);
   particleDef->SetUniqueID(mech);
 
-  Ex01Particle *mother = 0;
+  NeutronMCParticle *mother = 0;
   if (parent >= 0)
     mother = GetParticle(parent);
   else
     fNPrimary++;
 
-  Ex01Particle *particle = new Ex01Particle(GetNtrack(), particleDef, mother);
+  NeutronMCParticle *particle = new NeutronMCParticle(GetNtrack(), particleDef, mother);
 
   fParticles->Add(particle);
 
@@ -120,7 +103,7 @@ void Ex01MCStack::PushTrack(Int_t toBeDone, Int_t parent, Int_t pdg,
 }
 
 //_____________________________________________________________________________
-TParticle *Ex01MCStack::PopNextTrack(Int_t &itrack) {
+TParticle *NeutronMCStack::PopNextTrack(Int_t &itrack) {
   /// Get next particle for tracking from the stack.
   /// \return        The popped particle object
   /// \param itrack  The index of the popped track
@@ -129,7 +112,7 @@ TParticle *Ex01MCStack::PopNextTrack(Int_t &itrack) {
   if (fStack.empty())
     return 0;
 
-  Ex01Particle *particle = fStack.top();
+  NeutronMCParticle *particle = fStack.top();
   fStack.pop();
 
   if (!particle)
@@ -142,7 +125,7 @@ TParticle *Ex01MCStack::PopNextTrack(Int_t &itrack) {
 }
 
 //_____________________________________________________________________________
-TParticle *Ex01MCStack::PopPrimaryForTracking(Int_t i) {
+TParticle *NeutronMCStack::PopPrimaryForTracking(Int_t i) {
   /// Return \em i -th particle in fParticles.
   /// \return   The popped primary particle object
   /// \param i  The index of primary particle to be popped
@@ -150,11 +133,11 @@ TParticle *Ex01MCStack::PopPrimaryForTracking(Int_t i) {
   if (i < 0 || i >= fNPrimary)
     Fatal("GetPrimaryForTracking", "Index out of range");
 
-  return ((Ex01Particle *)fParticles->At(i))->GetParticle();
+  return ((NeutronMCParticle *)fParticles->At(i))->GetParticle();
 }
 
 //_____________________________________________________________________________
-void Ex01MCStack::SetCurrentTrack(Int_t itrack) {
+void NeutronMCStack::SetCurrentTrack(Int_t itrack) {
   /// Set the current track number to a given value.
   /// \param  itrack The current track number
 
@@ -162,24 +145,24 @@ void Ex01MCStack::SetCurrentTrack(Int_t itrack) {
 }
 
 //_____________________________________________________________________________
-Int_t Ex01MCStack::GetNtrack() const {
+Int_t NeutronMCStack::GetNtrack() const {
   /// \return  The total number of all tracks.
 
   return fParticles->GetEntriesFast();
 }
 
 //_____________________________________________________________________________
-Int_t Ex01MCStack::GetNprimary() const {
+Int_t NeutronMCStack::GetNprimary() const {
   /// \return  The total number of primary tracks.
 
   return fNPrimary;
 }
 
 //_____________________________________________________________________________
-TParticle *Ex01MCStack::GetCurrentTrack() const {
+TParticle *NeutronMCStack::GetCurrentTrack() const {
   /// \return  The current track particle
 
-  Ex01Particle *current = GetParticle(fCurrentTrack);
+  NeutronMCParticle *current = GetParticle(fCurrentTrack);
 
   if (current)
     return current->GetParticle();
@@ -188,21 +171,21 @@ TParticle *Ex01MCStack::GetCurrentTrack() const {
 }
 
 //_____________________________________________________________________________
-Int_t Ex01MCStack::GetCurrentTrackNumber() const {
+Int_t NeutronMCStack::GetCurrentTrackNumber() const {
   /// \return  The current track number
 
   return fCurrentTrack;
 }
 //_____________________________________________________________________________
-Int_t Ex01MCStack::GetCurrentParentTrackNumber() const {
+Int_t NeutronMCStack::GetCurrentParentTrackNumber() const {
   /// \return  The current track parent ID.
 
-  Ex01Particle *current = GetParticle(fCurrentTrack);
+  NeutronMCParticle *current = GetParticle(fCurrentTrack);
 
   if (!current)
     return -1;
 
-  Ex01Particle *mother = current->GetMother();
+  NeutronMCParticle *mother = current->GetMother();
 
   if (!mother)
     return -1;
@@ -210,7 +193,7 @@ Int_t Ex01MCStack::GetCurrentParentTrackNumber() const {
   return mother->GetID();
 }
 //_____________________________________________________________________________
-void Ex01MCStack::Reset() {
+void NeutronMCStack::Reset() {
   /// Delete contained particles, reset particles array and stack.
 
   // reset fStack
@@ -226,12 +209,12 @@ void Ex01MCStack::Reset() {
   }
 }
 //_____________________________________________________________________________
-void Ex01MCStack::Print() {
+void NeutronMCStack::Print() {
   /// Print all particles in stack
 
   std::cout << "Particle stack has " << fParticles->GetEntriesFast()
             << " particles:" << std::endl;
   for (int i = 0; i < fParticles->GetEntriesFast(); i++) {
-    ((Ex01Particle *)(fParticles->At(i)))->Print();
+    ((NeutronMCParticle *)(fParticles->At(i)))->Print();
   }
 }

@@ -1,5 +1,5 @@
 simulations
-build
+build*
 install
 *~
 *.root

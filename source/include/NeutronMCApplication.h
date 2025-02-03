@@ -1,24 +1,7 @@
+#ifndef NEUTRON_MC_APPLICATION_H
+#define NEUTRON_MC_APPLICATION_H
 
-#ifndef EX01_MC_APPLICATION_H
-#define EX01_MC_APPLICATION_H
-
-//------------------------------------------------
-// The Virtual Monte Carlo examples
-// Copyright (C) 2007 - 2014 Ivana Hrivnacova
-// All rights reserved.
-//
-// For the licensing terms see geant4_vmc/LICENSE.
-// Contact: root-vmc@cern.ch
-//-------------------------------------------------
-
-/// \file Ex01MCApplication.h
-/// \brief Definition of the Ex01MCApplication class
-///
-/// Geant4 ExampleN01 adapted to Virtual Monte Carlo
-///
-/// \author I. Hrivnacova; IPN, Orsay
-
-#include "Ex01MCStack.h"
+#include "NeutronMCStack.h"
 #include <TDatabasePDG.h>
 #include <TLorentzVector.h>
 #include <TString.h>
@@ -35,14 +18,14 @@ class TFile;
 /// \date 05/04/2002
 /// \author I. Hrivnacova; IPN, Orsay
 
-class Ex01MCApplication : public TVirtualMCApplication {
+class NeutronMCApplication : public TVirtualMCApplication {
 public:
-  Ex01MCApplication(const char *name, const char *title);
-  Ex01MCApplication();
-  virtual ~Ex01MCApplication();
+  NeutronMCApplication(const char *name, const char *title);
+  NeutronMCApplication();
+  virtual ~NeutronMCApplication();
 
   // static access method
-  static Ex01MCApplication *Instance();
+  static NeutronMCApplication *Instance();
 
   // methods
   void InitMC(const char *setup);
@@ -91,7 +74,7 @@ private:
   void ConstructVolumes();
 
   // data members
-  Ex01MCStack *fStack;         ///< The VMC stack
+  NeutronMCStack *fStack;         ///< The VMC stack
   TVirtualMagField *fMagField; ///< The magnetic field
   Int_t fImedAr;               ///< The Argon gas medium Id
   Int_t fImedAir;              ///< The air medium Id
@@ -182,19 +165,14 @@ private:
 
   TH1F *hNeutronsPerProton;
 
-  ClassDef(Ex01MCApplication, 1) // Interface to MonteCarlo application
+  ClassDef(NeutronMCApplication, 1) // Interface to MonteCarlo application
 };
 
 // inline functions
 
-inline Ex01MCApplication *Ex01MCApplication::Instance() {
+inline NeutronMCApplication *NeutronMCApplication::Instance() {
   /// \return The MC application instance
-  return (Ex01MCApplication *)(TVirtualMCApplication::Instance());
+  return (NeutronMCApplication *)(TVirtualMCApplication::Instance());
 }
 
-inline void Ex01MCApplication::SetOldGeometry(Bool_t oldGeometry) {
-  /// Select old geometry definition (via TVirtualMC)
-  fOldGeometry = oldGeometry;
-}
-
-#endif // EX01_MC_APPLICATION_H
+#endif // NEUTRON_MC_APPLICATION_H

@@ -1,24 +1,5 @@
-
-//------------------------------------------------
-// The Virtual Monte Carlo examples
-// Copyright (C) 2007 - 2014 Ivana Hrivnacova
-// All rights reserved.
-//
-// For the licensing terms see geant4_vmc/LICENSE.
-// Contact: root-vmc@cern.ch
-//-------------------------------------------------
-
-/// \file Ex01MCApplication.cxx
-/// \brief Implementation of the Ex01MCApplication class
-///
-/// Geant4 ExampleN01 adapted to Virtual Monte Carlo \n
-///
-/// \date 05/04/2002
-/// \author I. Hrivnacova; IPN, Orsay
-
-#include "Ex01MCApplication.h"
-#include "Ex01DetectorConstructionOld.h"
-#include "Ex01MCStack.h"
+#include "NeutronMCApplication.h"
+#include "NeutronMCStack.h"
 
 #include <Riostream.h>
 #include <TArrayD.h>
@@ -43,28 +24,28 @@
 using namespace std;
 
 /// \cond CLASSIMP
-ClassImp(Ex01MCApplication)
+ClassImp(NeutronMCApplication)
     /// \endcond
 
     //_____________________________________________________________________________
-    Ex01MCApplication::Ex01MCApplication(const char *name, const char *title)
+    NeutronMCApplication::NeutronMCApplication(const char *name, const char *title)
     : TVirtualMCApplication(name, title), fStack(0), fMagField(0), fImedAr(0),
       fImedAir(0), fImedAl(0), fImedPb(0), fImedBe(0), fImedC(0), fImedCu(0),
       fImedSn(0), fImedCH2(0), fImedBronze(0), fImedWolfram(0),
-      fOldGeometry(kFALSE), fPdg(0), fSeed(0) {
+      fPdg(0), fSeed(0) {
   /// Standard constructor
   /// \param name   The MC application name
   /// \param title  The MC application description
 
   // create a user stack
-  fStack = new Ex01MCStack(1000000);
+  fStack = new NeutronMCStack(1000000);
 
   // create magnetic field (with zero value)
   fMagField = new TGeoUniformMagField();
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::SetCollectTracks(bool collectTracks) {
+void NeutronMCApplication::SetCollectTracks(bool collectTracks) {
   fIsCollectTracks = collectTracks;
   if (collectTracks) {
     gMC->SetCollectTracks(fIsCollectTracks);
@@ -72,21 +53,21 @@ void Ex01MCApplication::SetCollectTracks(bool collectTracks) {
 }
 
 //_____________________________________________________________________________
-Ex01MCApplication::Ex01MCApplication()
+NeutronMCApplication::NeutronMCApplication()
     : TVirtualMCApplication(), fStack(0), fMagField(0), fImedAr(0), fImedAir(0),
       fImedAl(0), fImedPb(0), fImedBe(0), fImedC(0), fImedCu(0), fImedSn(0),
-      fImedCH2(0), fImedBronze(0), fImedWolfram(0), fOldGeometry(kFALSE),
+      fImedCH2(0), fImedBronze(0), fImedWolfram(0),
       fPdg(0), fSeed(0) {
   /// Default constructor
   // create a user stack
-  fStack = new Ex01MCStack(1000000);
+  fStack = new NeutronMCStack(1000000);
 
   // create magnetic field (with zero value)
   fMagField = new TGeoUniformMagField();
 }
 
 //_____________________________________________________________________________
-Ex01MCApplication::~Ex01MCApplication() {
+NeutronMCApplication::~NeutronMCApplication() {
   /// Destructor
 
   delete fStack;
@@ -99,7 +80,7 @@ Ex01MCApplication::~Ex01MCApplication() {
 //
 
 //_____________________________________________________________________________
-void Ex01MCApplication::ConstructMaterials() {
+void NeutronMCApplication::ConstructMaterials() {
   /// Construct materials using TGeo modeller
 
   // Create Root geometry manager
@@ -408,7 +389,7 @@ void Ex01MCApplication::ConstructMaterials() {
 }
 //____________________________________________________________________________
 //_____________________________________________________________________________
-void Ex01MCApplication::ConstructVolumes() {
+void NeutronMCApplication::ConstructVolumes() {
   /// Contruct volumes using TGeo modeller
 
   //------------------------------ experimental hall (world volume)
@@ -564,7 +545,7 @@ void Ex01MCApplication::ConstructVolumes() {
 //
 
 //_____________________________________________________________________________
-void Ex01MCApplication::InitMC(const char *setup) {
+void NeutronMCApplication::InitMC(const char *setup) {
   /// Initialize MC.
   /// The selection of the concrete MC is done in the macro.
   /// \param setup The name of the configuration macro
@@ -686,7 +667,7 @@ void Ex01MCApplication::InitMC(const char *setup) {
 }
 
 //__________________________________________________________________________
-void Ex01MCApplication::RunMC(Int_t nofEvents) {
+void NeutronMCApplication::RunMC(Int_t nofEvents) {
   /// Run MC.
   /// \param nofEvents Number of events to be processed
 
@@ -709,7 +690,7 @@ void Ex01MCApplication::RunMC(Int_t nofEvents) {
   FinishRun();
 }
 //_____________________________________________________________________________
-void Ex01MCApplication::FinishRun() {
+void NeutronMCApplication::FinishRun() {
   /// Finish MC run.
   fFileSave->Write();
   fFileSave->Close();
@@ -720,48 +701,39 @@ void Ex01MCApplication::FinishRun() {
 }
 
 //_____________________________________________________________________________
-TVirtualMCApplication *Ex01MCApplication::CloneForWorker() const {
-  return new Ex01MCApplication(GetName(), GetTitle());
+TVirtualMCApplication *NeutronMCApplication::CloneForWorker() const {
+  return new NeutronMCApplication(GetName(), GetTitle());
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::InitOnWorker() {
+void NeutronMCApplication::InitOnWorker() {
   gMC->SetStack(fStack);
   gMC->SetMagField(fMagField);
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::ConstructGeometry() {
-  /// Construct geometry using TGeo functions or
-  /// TVirtualMC functions (if oldGeometry is selected)
-
+void NeutronMCApplication::ConstructGeometry() {
+  /// Construct geometry using TGeo functions
   // Cannot use Root geometry if not supported with
   // selected MC
-  if (!fOldGeometry && !gMC->IsRootGeometrySupported()) {
+  if (gMC->IsRootGeometrySupported()) {
     cerr << "Selected MC does not support TGeo geometry" << endl;
     cerr << "Exiting program" << endl;
     exit(1);
   }
 
-  if (!fOldGeometry) {
-    cout << "Geometry will be defined via TGeo" << endl;
-    ConstructMaterials();
-    ConstructVolumes();
-  } else {
-    cout << "Geometry will be defined via VMC" << endl;
-    Ex01DetectorConstructionOld detConstructionOld;
-    detConstructionOld.ConstructMaterials();
-    detConstructionOld.ConstructVolumes();
-  }
+  cout << "Geometry will be defined via TGeo" << endl;
+  ConstructMaterials();
+  ConstructVolumes();
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::InitGeometry() {
+void NeutronMCApplication::InitGeometry() {
   /// Initialize geometry.
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::GeneratePrimaries() {
+void NeutronMCApplication::GeneratePrimaries() {
   /// Fill the user stack (derived from TVirtualMCStack) with primary particles.
 
   // Track ID (filled by stack)
@@ -810,7 +782,7 @@ void Ex01MCApplication::GeneratePrimaries() {
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::BeginEvent() {
+void NeutronMCApplication::BeginEvent() {
   /// User actions at beginning of event.
   fNNeutrons = 0;
   fDrawEvent = false;
@@ -828,13 +800,13 @@ void Ex01MCApplication::BeginEvent() {
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::BeginPrimary() {
+void NeutronMCApplication::BeginPrimary() {
   /// User actions at beginning of a primary track.
   /// Nothing to be done this example
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::PreTrack() {
+void NeutronMCApplication::PreTrack() {
   /// User actions at beginning of each track.
   /// Print info message.
 
@@ -843,7 +815,7 @@ void Ex01MCApplication::PreTrack() {
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::Stepping() {
+void NeutronMCApplication::Stepping() {
   /// User actions at each step.
   // cout << gMC->TrackPid() << endl;
   if (strcmp(gMC->CurrentVolName(), "SENS_SPHERE") == 0 &&
@@ -925,19 +897,19 @@ void Ex01MCApplication::Stepping() {
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::PostTrack() {
+void NeutronMCApplication::PostTrack() {
   /// User actions after finishing of each track
   /// Nothing to be done this example
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::FinishPrimary() {
+void NeutronMCApplication::FinishPrimary() {
   /// User actions after finishing of a primary track.
   /// Nothing to be done this example
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::FinishEvent() {
+void NeutronMCApplication::FinishEvent() {
   fNEvents++;
   hNeutronsPerProton->Fill(fNNeutrons);
   if ((fDrawEvent || fDrawEachEvent) && fIsCollectTracks) {
@@ -959,7 +931,7 @@ void Ex01MCApplication::FinishEvent() {
 }
 
 //_____________________________________________________________________________
-void Ex01MCApplication::TestVMCGeometryGetters() {
+void NeutronMCApplication::TestVMCGeometryGetters() {
   /// Test (new) TVirtualMC functions:
   /// GetTransform(), GetShape(), GetMaterial(), GetMedium()
 
