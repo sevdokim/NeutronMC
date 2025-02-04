@@ -18,7 +18,7 @@ void drawHistos(const char *fileName = "histos.root") {
   gStyle->SetOptStat(1);
   gPad->SetLogy(1);
   TH1F *hNeutronsPerProton = (TH1F *)f->Get("hNeutronsPerProton");
-  hNeutronsPerProton->GetXaxis()->SetRangeUser(0., 100);
+  hNeutronsPerProton->GetXaxis()->SetRangeUser(0., 500);
   hNeutronsPerProton->Draw();
   c1->Print(fileSave + "(");
 

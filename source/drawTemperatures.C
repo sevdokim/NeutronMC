@@ -22,7 +22,7 @@ void drawTemperatures() {
     "ShieldingLEND_W10x25_H2C20x35.root",
     "ShieldingLEND_W10x25_C60x75.root"}; */
   const char *fileName[] = {
-    "ShieldingLEND_W10x25_Be2C50x65.root",
+    //"ShieldingLEND_W10x25_Be2C50x65.root",
     //"ShieldingLEND_W10x25_Be2C50x65_T500C.root",
     "ShieldingLEND_W10x25_Be2C50x65_T1000C.root",
     "ShieldingLEND_W10x25_Be2C50x65_T2000C.root"

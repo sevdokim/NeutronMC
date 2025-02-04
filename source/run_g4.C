@@ -1,10 +1,11 @@
 void run_g4(int nEvents = 100000, int seed = 0,
-	    int pdg = 2212, double energy = 1.3 /*GeV*/,
+	    double energy = 1.3 /*GeV*/,
 	    double targThickness = 100 /*cm*/,
-	    double targRadius = 25. /*cm*/,
+	    double targDiameter = 50. /*cm*/,
 	    const char *targMaterial = "232Thorium",
 	    double coolingThickness = 0.,
 	    const char *coolingMaterial = "232Thorium",
+	    int pdg = 2212,
             const TString &configMacro = "g4tgeoConfig.C")
 {
   gRandom->SetSeed(seed);
@@ -22,7 +23,7 @@ void run_g4(int nEvents = 100000, int seed = 0,
 
   // target parameters
   appl->SetTargetThickness(targThickness);
-  appl->SetTargetRadius(targRadius);
+  appl->SetTargetRadius(targDiameter / 2.);
   appl->SetTargetMaterial(targMaterial);
 
   // cooling parameters

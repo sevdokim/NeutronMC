@@ -1,6 +1,6 @@
 simulations
 build*
-install
+install*
 *~
 *.root
 *#*#

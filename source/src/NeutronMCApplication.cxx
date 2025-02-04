@@ -661,7 +661,7 @@ void NeutronMCApplication::InitMC(const char *setup) {
 
   hNeutronsPerProton =
       new TH1F("hNeutronsPerProton",
-               "Number of neutrons per proton; N_{n}; counts", 1000, 0., 1000.);
+               "Number of neutrons per proton; N_{n}; counts", 100000, 0., 100000.);
 
   fNeutronMass = TDatabasePDG::Instance()->GetParticle(2112)->Mass();
 }
@@ -716,7 +716,7 @@ void NeutronMCApplication::ConstructGeometry() {
   /// Construct geometry using TGeo functions
   // Cannot use Root geometry if not supported with
   // selected MC
-  if (gMC->IsRootGeometrySupported()) {
+  if (!gMC->IsRootGeometrySupported()) {
     cerr << "Selected MC does not support TGeo geometry" << endl;
     cerr << "Exiting program" << endl;
     exit(1);
