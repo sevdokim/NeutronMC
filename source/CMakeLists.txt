@@ -1,6 +1,6 @@
 #----------------------------------------------------------------------------
 # Setup the project
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 #----------------------------------------------------------------------------
 # Project neutronMCStudy
@@ -18,28 +18,35 @@ set(test_name test${PROJECT_NAME})
 #----------------------------------------------------------------------------
 # CMake Module Path
 #
+
 set(CMAKE_MODULE_PATH
     ${PROJECT_SOURCE_DIR}/cmake
-    ${Geant4VMC_DIR}/Modules
     ${CMAKE_MODULE_PATH})
+
+#if(DEFINED Geant4_VMC)
+#message(STATUS "Using Geant4_VMC = ${Geant4_VMC}")
+#elseif(DEFINED ENV{Geant4_VMC})
+#message(STATUS "Using evn var Geant4_VMC = $ENV{Geant4_VMC}")
+#set(Geant4_VMC $ENV{Geant4_VMC})
+#else()
+#message(WARNING "Geant4_VMC is not defined! Please provide Geant4_VMC 
+#(set env var Geant4_VMC or provide cmake parameter 
+#e.g. -D$Geant4_VMC=/path/to/geant4_vmc/lib/Geant4VMC-6.6.0/) Aborting.")
+#endif()
 
 #----------------------------------------------------------------------------
 # VMC Configuration file
 # (for building MC independent code)
 #
 include(UseVMC)
+include(UseMC)
 
-#----------------------------------------------------------------------------
-# Setup project include directories; compile definitions; link libraries
-#
 include_directories(
   ${PROJECT_SOURCE_DIR}/include
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${Geant4VMC_DIR}/../../include/geant4vmc
-  /home/evdokimov/mysw/INSTALL/geant4/include/Geant4/
-  /home/evdokimov/mysw/INSTALL/geant4_vmc/include/geant4vmc)
+  ${Geant4_INCLUDE_DIRS}
+  ${CMAKE_CURRENT_BINARY_DIR})
 
-message(STATUS "Geant4VMC_DIR=${Geant4VMC_DIR}")
+
 #----------------------------------------------------------------------------
 # Generate Root dictionaries
 #

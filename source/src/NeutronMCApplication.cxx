@@ -28,11 +28,12 @@ ClassImp(NeutronMCApplication)
     /// \endcond
 
     //_____________________________________________________________________________
-    NeutronMCApplication::NeutronMCApplication(const char *name, const char *title)
+    NeutronMCApplication::NeutronMCApplication(const char *name,
+                                               const char *title)
     : TVirtualMCApplication(name, title), fStack(0), fMagField(0), fImedAr(0),
       fImedAir(0), fImedAl(0), fImedPb(0), fImedBe(0), fImedC(0), fImedCu(0),
-      fImedSn(0), fImedCH2(0), fImedBronze(0), fImedWolfram(0),
-      fPdg(0), fSeed(0) {
+      fImedSn(0), fImedCH2(0), fImedBronze(0), fImedWolfram(0), fPdg(0),
+      fSeed(0) {
   /// Standard constructor
   /// \param name   The MC application name
   /// \param title  The MC application description
@@ -56,8 +57,7 @@ void NeutronMCApplication::SetCollectTracks(bool collectTracks) {
 NeutronMCApplication::NeutronMCApplication()
     : TVirtualMCApplication(), fStack(0), fMagField(0), fImedAr(0), fImedAir(0),
       fImedAl(0), fImedPb(0), fImedBe(0), fImedC(0), fImedCu(0), fImedSn(0),
-      fImedCH2(0), fImedBronze(0), fImedWolfram(0),
-      fPdg(0), fSeed(0) {
+      fImedCH2(0), fImedBronze(0), fImedWolfram(0), fPdg(0), fSeed(0) {
   /// Default constructor
   // create a user stack
   fStack = new NeutronMCStack(1000000);
@@ -149,7 +149,7 @@ void NeutronMCApplication::ConstructMaterials() {
   TGeoIsotope *isot232Th = new TGeoIsotope("232Th", 90, 232, 232.038055);
   TGeoElement *el232Th = new TGeoElement("Thorium232", "232Th", 1);
   el232Th->AddIsotope(isot232Th, 1.);
-  
+
   //____Ar____
   a = 39.95;
   z = 18.;
@@ -220,7 +220,7 @@ void NeutronMCApplication::ConstructMaterials() {
   //_____Th______
   TGeoMixture *mat232Th = new TGeoMixture("232Th", 1, density = 11.78);
   mat232Th->AddElement(el232Th, int(1));
-  
+
   //____Al____
   TGeoMaterial *matAl =
       new TGeoMaterial("Al", a = 26.98, z = 13., density = 2.7);
@@ -283,7 +283,6 @@ void NeutronMCApplication::ConstructMaterials() {
   TGeoMaterial *matVac =
       new TGeoMaterial("Vacuum", a = 1., z = 1., density = 10e-10);
 
-  
   //
   // Tracking medias
   //
@@ -659,9 +658,9 @@ void NeutronMCApplication::InitMC(const char *setup) {
       new TH1F("hPhotonEnergyW", "PhotonEnergy (weight = E); E (MeV); counts",
                100000, 0., 1000.);
 
-  hNeutronsPerProton =
-      new TH1F("hNeutronsPerProton",
-               "Number of neutrons per proton; N_{n}; counts", 100000, 0., 100000.);
+  hNeutronsPerProton = new TH1F("hNeutronsPerProton",
+                                "Number of neutrons per proton; N_{n}; counts",
+                                100000, 0., 100000.);
 
   fNeutronMass = TDatabasePDG::Instance()->GetParticle(2112)->Mass();
 }
@@ -672,11 +671,6 @@ void NeutronMCApplication::RunMC(Int_t nofEvents) {
   /// \param nofEvents Number of events to be processed
 
   // gRandom = new TRandom2(fSeed);
-  // TGeant4::MasterInstance()->SetRandomSeed();
-  /*TGeant4::MasterInstance()->ProcessGeantCommand(
-      Form("/random/setSeeds %d %d", fSeed, fSeed));
-  cout << "fSeed = " << fSeed << ", actual random seed = " << gRandom->GetSeed()
-       << endl;*/
   if (fIsCollectTracks) {
     gGeoManager->GetTopVolume()->Draw();
     gGeoManager->DrawTracks("/*");
